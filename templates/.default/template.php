@@ -11,51 +11,67 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
+
+if( !isset($arResult["IBLOCKS"]) || ! is_array($arResult["IBLOCKS"]) )
+	return;
+
+$this->addExternalCss($componentPath . "/assets/slick/slick.css");
+$this->addExternalJS($componentPath . "/assets/slick/slick.min.js");
+
 ?>
-<?$LINE_ELEMENT_COUNT=2;?>
-<div class="news-index">
-<table cellpadding="10" cellspacing="0" border="0" width="100%">
-	<tr>
+<style type="text/css">
+/* Default Icons */
+.slick-loading .slick-list
+{
+	background: #fff url('<?=$componentPath;?>/assets/slick/ajax-loader.gif') center center no-repeat;
+}
+@font-face
+{
+	font-family: 'slick';
+	font-weight: normal;
+	font-style: normal;
+
+	src: url('<?=$componentPath;?>/assets/slick/fonts/slick.eot');
+	src: url('<?=$componentPath;?>/assets/slick/fonts/slick.eot?#iefix') format('embedded-opentype'),
+	url('<?=$componentPath;?>/assets/slick/fonts/slick.woff') format('woff'),
+	url('<?=$componentPath;?>/assets/slick/fonts/slick.ttf') format('truetype'),
+	url('<?=$componentPath;?>/assets/slick/fonts/slick.svg#slick') format('svg');
+}
+
+</style>
+<?php
+foreach ($arResult["IBLOCKS"] as $arIBlock) {
+	echo "<section id='slick-slider-{$arIBlock['ID']}'>";
+	// Добавить кнопку "Добавить элемент"
+	$this->AddEditAction('iblock_'.$arIBlock['ID'], $arIBlock['ADD_ELEMENT_LINK'], CIBlock::GetArrayByID($arIBlock["ID"], "ELEMENT_ADD"));
+
+	foreach($arIBlock["ITEMS"] as $arItem) { ?>
+		<div id="<?=$this->GetEditAreaId($arItem['ID']);?>">
+			<?php
+			// Добавить кнопки "Изменить", "Удалить"
+			// $this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
+			// $this->AddDeleteAction($arItem['ID'], $arItem['DELETE_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => 'Вы уверены?'));
+
+				bx_get_image( $arItem['PREVIEW_PICTURE'] );
+				bx_get_image( $arItem['DETAIL_PICTURE'] );
+			?>
+			<!-- <a href="<? // =$arItem["DETAIL_PAGE_URL"]?>"><? // =$arItem["NAME"]?></a> -->
+		</div>
+		<?php
+
+		// echo $arItem["DISPLAY_ACTIVE_FROM"];
+	}
+	echo "</section>";
+}
+
+if( ! (string)$props = json_encode((array)$props) ) {
+	$props = '';
+}
+
+
+?>
+<? // =$props;?>
+<script type="text/javascript">
+	BX.message({ BLOCK_ID: '#slick-slider-<?=$arIBlock['ID'];?>' });
+</script>
 <?
-$cell = 0;
-foreach($arResult["IBLOCKS"] as $arIBlock):?>
-		<td valign="top" width="<?=round(100/$LINE_ELEMENT_COUNT)?>%">
-			<table class="data-table" cellpadding="0" cellspacing="0" border="0" width="100%">
-			<thead>
-				<?
-				$this->AddEditAction('iblock_'.$arIBlock['ID'], $arIBlock['ADD_ELEMENT_LINK'], CIBlock::GetArrayByID($arIBlock["ID"], "ELEMENT_ADD"));
-				?>
-				<tr valign="top" id="<?=$this->GetEditAreaId('iblock_'.$arIBlock['ID']);?>">
-					<td colspan="2"><a href="<?=$arIBlock["LIST_PAGE_URL"]?>"><?=$arIBlock["NAME"]?></a></td>
-				</tr>
-			</thead>
-				<?foreach($arIBlock["ITEMS"] as $arItem):?>
-				<?
-				$this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
-				$this->AddDeleteAction($arItem['ID'], $arItem['DELETE_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => GetMessage('CT_BNI_ELEMENT_DELETE_CONFIRM')));
-				?>
-				<tr valign="top" id="<?=$this->GetEditAreaId($arItem['ID']);?>">
-					<td class="news-date-time" style="border:0" nowrap id="<?=$this->GetEditAreaId($arItem['ID']);?>">
-						<?=$arItem["DISPLAY_ACTIVE_FROM"]?>&nbsp;
-					</td>
-					<td style="border:0">
-						<a href="<?=$arItem["DETAIL_PAGE_URL"]?>"><?=$arItem["NAME"]?></a>&nbsp;
-					</td>
-				</tr>
-				<?endforeach;?>
-			</table>
-		</td>
-	<?
-	if((++$cell)>=$LINE_ELEMENT_COUNT):
-		$cell = 0;
-	?></tr><tr><?
-	endif; // if($n%$LINE_ELEMENT_COUNT == 0):
-endforeach;
-		while ($cell<$LINE_ELEMENT_COUNT):
-			$cell++;
-		?><td>&nbsp;</td><?
-		endwhile;
-		?>
-	</tr>
-</table>
-</div>

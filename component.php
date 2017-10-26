@@ -14,6 +14,7 @@ use Bitrix\Main\Loader,
 	Bitrix\Main,
 	Bitrix\Iblock;
 
+
 if( ! isset( $arParams["CACHE_TIME"] ) ) {
 	$arParams["CACHE_TIME"] = 36000000;
 }
@@ -112,6 +113,8 @@ if( $this->startResultCache(false, $groups) ) {
 		"DETAIL_TEXT_TYPE",
 		"DETAIL_PAGE_URL",
 		"PREVIEW_TEXT_TYPE",
+		"PREVIEW_PICTURE",
+		"DETAIL_PICTURE",
 	) );
 
 	$bGetProperty = count($arParams["PROPERTY_CODE"]) > 0;
@@ -206,28 +209,30 @@ if( $this->startResultCache(false, $groups) ) {
 			);
 
 			$arItem["FIELDS"] = array();
-			foreach($arParams["FIELD_CODE"] as $code)
-				if(array_key_exists($code, $arItem))
-					$arItem["FIELDS"][$code] = $arItem[$code];
+			foreach($arParams["FIELD_CODE"] as $code) {
+				if( array_key_exists($code, $arItem) ) {
+					$arItem["FIELDS"][ $code ] = $arItem[ $code ];
+				}
+			}
 
-			if($bGetProperty)
+			if( $bGetProperty ) {
 				$arItem["PROPERTIES"] = $obItem->GetProperties();
-			$arItem["DISPLAY_PROPERTIES"]=array();
+			}
+
+			$arItem["DISPLAY_PROPERTIES"] = array();
+
 			foreach($arParams["PROPERTY_CODE"] as $pid)
 			{
 				$prop = &$arItem["PROPERTIES"][$pid];
-				if(
-					(is_array($prop["VALUE"]) && count($prop["VALUE"])>0)
-					|| (!is_array($prop["VALUE"]) && strlen($prop["VALUE"])>0)
-				)
-				{
+				if( (is_array($prop["VALUE"]) && count($prop["VALUE"])>0)
+					|| (!is_array($prop["VALUE"]) && strlen($prop["VALUE"])>0) ) {
 					$arItem["DISPLAY_PROPERTIES"][$pid] = CIBlockFormatProperties::GetDisplayValue($arItem, $prop, "news_out");
 				}
 			}
 
 			$arIBlock["ITEMS"][] = $arItem;
 		}
-		$arResult["IBLOCKS"][]=$arIBlock;
+		$arResult["IBLOCKS"][] = $arIBlock;
 	}
 
 	$this->setResultCacheKeys(array());
