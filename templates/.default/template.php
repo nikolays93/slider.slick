@@ -45,8 +45,9 @@ foreach ($arResult["IBLOCKS"] as $arIBlock) {
 	// Добавить кнопку "Добавить элемент"
 	$this->AddEditAction('iblock_'.$arIBlock['ID'], $arIBlock['ADD_ELEMENT_LINK'], CIBlock::GetArrayByID($arIBlock["ID"], "ELEMENT_ADD"));
 
+	$i = 0;
 	foreach($arIBlock["ITEMS"] as $arItem) { ?>
-		<div id="<?=$this->GetEditAreaId($arItem['ID']);?>">
+		<div id="<?=$this->GetEditAreaId($arItem['ID']);?>"<?if($i) echo ' style="display: none;"';?>>
 			<?php
 			// Добавить кнопки "Изменить", "Удалить"
 			// $this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
@@ -58,8 +59,7 @@ foreach ($arResult["IBLOCKS"] as $arIBlock) {
 			<!-- <a href="<? // =$arItem["DETAIL_PAGE_URL"]?>"><? // =$arItem["NAME"]?></a> -->
 		</div>
 		<?php
-
-		// echo $arItem["DISPLAY_ACTIVE_FROM"];
+		$i++;
 	}
 	echo "</section>";
 }

@@ -1,3 +1,6 @@
+.slick-initialized .slick-slide {
+    display: block !important;
+}
 /* Arrows */
 .slick-prev,
 .slick-next
