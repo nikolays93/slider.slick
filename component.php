@@ -14,6 +14,59 @@ use Bitrix\Main\Loader,
 	Bitrix\Main,
 	Bitrix\Iblock;
 
+if( ! function_exists('bx_parse_array') ) {
+    function bx_parse_array( $args, $defaults = array(), $empty = false ) {
+        $defaults = (array) $defaults;
+        $out = array();
+
+        if( $empty ) {
+            $defaults = array_fill_keys($defaults, '');
+        }
+
+        foreach ($defaults as $name => $default) {
+            if ( array_key_exists($name, $args) ){
+                $out[ $name ] = $args[ $name ];
+            }
+            else {
+                $out[ $name ] = $default;
+            }
+        }
+
+        return $out;
+    }
+}
+
+if( ! function_exists('bx_get_image') ) {
+    function bx_get_image( $arrItem, $atts = array(), $return = false ) {
+        $atts = (array) $atts;
+
+        $attr = bx_parse_array( $arrItem, array('SRC', 'WIDTH', 'HEIGHT', 'ALT', 'TITLE'), true );
+
+        $html = '';
+        if( $attr['SRC'] ) {
+            $hwstring = '';
+            if( $attr['HEIGHT'] ) $hwstring .= "height='{$attr['HEIGHT']}' ";
+            if( $attr['WIDTH'] ) $hwstring .= "width='{$attr['WIDTH']}' ";
+
+            unset($attr['HEIGHT']);
+            unset($attr['WIDTH']);
+
+            $attr = array_merge($atts, $attr);
+
+            $html .= rtrim("<img $hwstring");
+            foreach ( $attr as $name => $value ) {
+                $html .= sprintf(' %s="%s"', strtolower($name), htmlspecialcharsbx($value) );
+            }
+            $html .= ' />';
+        }
+
+        if( $return ) {
+            return $html;
+        }
+
+        echo $html;
+    }
+}
 
 if( ! isset( $arParams["CACHE_TIME"] ) ) {
 	$arParams["CACHE_TIME"] = 36000000;

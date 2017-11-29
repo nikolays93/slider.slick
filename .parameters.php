@@ -91,9 +91,9 @@ $arComponentParameters = array(
 		),
 		"NEWS_COUNT" => Array(
 			"PARENT" => "BASE",
-			"NAME" => "Количество показываемых слайдов",
+			"NAME" => "Макс. количество слайдов",
 			"TYPE" => "STRING",
-			"DEFAULT" => "1",
+			"DEFAULT" => "5",
 		),
 		"IBLOCK_SORT_BY" => Array(
 			"PARENT" => "DATA_SOURCE",
