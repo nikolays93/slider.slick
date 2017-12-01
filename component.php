@@ -121,6 +121,7 @@ if( $this->startResultCache(false, $groups) ) {
 	if( $bGetProperty ) {
 		$arSelect[]="PROPERTY_*";
 	}
+    $arSelect[] = "PROPERTY_SLICK_LINK";
 
 	//WHERE
 	//$arrFilter["IBLOCK_TYPE"] = $arParams["IBLOCK_TYPE"];
@@ -219,11 +220,17 @@ if( $this->startResultCache(false, $groups) ) {
 				$arItem["PROPERTIES"] = $obItem->GetProperties();
 			}
 
+            $arItem['SLICK_LINK'] = '';
+            if( $arParams['USE_LINKS'] != "N" ) {
+                $arItem['SLICK_LINK'] = ! empty( $arItem['PROPERTY_SLICK_LINK_VALUE'] )
+                    ? $arItem["PROPERTY_SLICK_LINK_VALUE"] : $arItem["DETAIL_PAGE_URL"];
+            }
+
 			$arItem["DISPLAY_PROPERTIES"] = array();
 
 			foreach($arParams["PROPERTY_CODE"] as $pid)
 			{
-				$prop = &$arItem["PROPERTIES"][$pid];
+                $prop = &$arItem["PROPERTIES"][$pid];
 				if( (is_array($prop["VALUE"]) && count($prop["VALUE"])>0)
 					|| (!is_array($prop["VALUE"]) && strlen($prop["VALUE"])>0) ) {
 					$arItem["DISPLAY_PROPERTIES"][$pid] = CIBlockFormatProperties::GetDisplayValue($arItem, $prop, "news_out");

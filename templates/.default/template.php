@@ -21,8 +21,6 @@ $first_iblock = current($arResult['IBLOCKS']);
 <div class="slick-list" id="slick-<?=$first_iblock['ID'];?>">
 <?foreach ($arResult['IBLOCKS'] as $iblock):
 foreach($iblock["ITEMS"] as $arItem):
-	for ($i=0; $i < 10; $i++) {
-
 	$this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
 	$this->AddDeleteAction($arItem['ID'], $arItem['DELETE_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => GetMessage('CT_BNL_ELEMENT_DELETE_CONFIRM')));
 
@@ -33,27 +31,19 @@ foreach($iblock["ITEMS"] as $arItem):
 		$arItem["PREVIEW_PICTURE"]["HEIGHT"],
 		$arItem["PREVIEW_PICTURE"]["ALT"],
 		$arItem["PREVIEW_PICTURE"]["TITLE"]);
-
-	if( ! empty($arItem['PREVIEW_LINK']) ) {
-		$link = $arItem['PREVIEW_LINK'];
-	}
-	elseif( $arResult["USER_HAVE_ACCESS"] ) {
-		$link = $arItem["DETAIL_PAGE_URL"];
-		echo sprintf('<a href="%s">%s</a>', $link, $img);
-	}
 	?>
 	<div class="item" id="<?=$this->GetEditAreaId($arItem['ID']);?>">
 
 		<div class="thumbnail">
 			<?if($arParams["DISPLAY_PICTURE"]!="N" && is_array($arItem["PREVIEW_PICTURE"])) {
-				echo ( $link ) ? sprintf('<a href="%s">%s</a>', $link, $img) : $img;
+				echo ( $arItem['SLICK_LINK'] ) ? sprintf('<a href="%s">%s</a>', $arItem['SLICK_LINK'], $img) : $img;
 			}?>
 		</div>
 
 		<div class="description">
 			<?if($arParams["DISPLAY_NAME"]!="N" && $arItem["NAME"]) {
 				echo sprintf('<div class="item-title">%s</div>',
-					$link ? sprintf('<a href="%s">%s</a>', $link, $name) : $name);
+					$arItem['SLICK_LINK'] ? sprintf('<a href="%s">%s</a>', $arItem['SLICK_LINK'], $name) : $name);
 			}?>
 
 			<?if($arParams["DISPLAY_DATE"]!="N" && $arItem["DISPLAY_ACTIVE_FROM"]):?>
@@ -66,7 +56,7 @@ foreach($iblock["ITEMS"] as $arItem):
 		</div>
 
 	</div>
-<? } endforeach;endforeach;?>
+<?endforeach;endforeach;?>
 </div><!-- .slick-list -->
 
 <script type="text/javascript">

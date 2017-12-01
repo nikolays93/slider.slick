@@ -162,6 +162,13 @@ $arComponentParameters = array(
 			"TYPE" => "STRING",
 			"DEFAULT" => "arrFilter",
 		),
+
+        "USE_LINKS" => array(
+            "PARENT" => "URL_TEMPLATES",
+            "NAME" => "Установить ссылки",
+            "TYPE" => "CHECKBOX",
+            "DEFAULT" => "Y",
+        ),
 		// "IBLOCK_URL" => CIBlockParameters::GetPathTemplateParam(
 		// 	"LIST",
 		// 	"IBLOCK_URL",
