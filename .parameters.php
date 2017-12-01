@@ -93,7 +93,7 @@ $arComponentParameters = array(
 			"PARENT" => "BASE",
 			"NAME" => "Макс. количество слайдов",
 			"TYPE" => "STRING",
-			"DEFAULT" => "5",
+			"DEFAULT" => "15",
 		),
 		"IBLOCK_SORT_BY" => Array(
 			"PARENT" => "DATA_SOURCE",
@@ -116,7 +116,7 @@ $arComponentParameters = array(
 		),
 		"SORT_BY1" => Array(
 			"PARENT" => "DATA_SOURCE",
-			"NAME" => "Поле для первой сортировки новостей",
+			"NAME" => "Поле для первой сортировки слайдов",
 			"TYPE" => "LIST",
 			"DEFAULT" => "ACTIVE_FROM",
 			"VALUES" => $arSortFields,
@@ -124,7 +124,7 @@ $arComponentParameters = array(
 		),
 		"SORT_ORDER1" => Array(
 			"PARENT" => "DATA_SOURCE",
-			"NAME" => "Направление для первой сортировки новостей",
+			"NAME" => "Направление для первой сортировки слайдов",
 			"TYPE" => "LIST",
 			"DEFAULT" => "DESC",
 			"VALUES" => $arSorts,
@@ -132,7 +132,7 @@ $arComponentParameters = array(
 		),
 		"SORT_BY2" => Array(
 			"PARENT" => "DATA_SOURCE",
-			"NAME" => "Поле для второй сортировки новостей",
+			"NAME" => "Поле для второй сортировки слайдов",
 			"TYPE" => "LIST",
 			"DEFAULT" => "SORT",
 			"VALUES" => $arSortFields,
@@ -140,7 +140,7 @@ $arComponentParameters = array(
 		),
 		"SORT_ORDER2" => Array(
 			"PARENT" => "DATA_SOURCE",
-			"NAME" => "Направление для второй сортировки новостей",
+			"NAME" => "Направление для второй сортировки слайдов",
 			"TYPE" => "LIST",
 			"DEFAULT" => "ASC",
 			"VALUES" => $arSorts,
@@ -169,13 +169,13 @@ $arComponentParameters = array(
 		// 	"",
 		// 	"URL_TEMPLATES"
 		// ),
-		// "DETAIL_URL" => CIBlockParameters::GetPathTemplateParam(
-		// 	"DETAIL",
-		// 	"DETAIL_URL",
-		// 	"Детальный УРЛ",
-		// 	"",
-		// 	"URL_TEMPLATES"
-		// ),
+		"DETAIL_URL" => CIBlockParameters::GetPathTemplateParam(
+			"DETAIL",
+			"DETAIL_URL",
+			"Детальный УРЛ",
+			"",
+			"URL_TEMPLATES"
+		),
 		"ACTIVE_DATE_FORMAT" => CIBlockParameters::GetDateFormat("Формат показа даты", "ADDITIONAL_SETTINGS"),
 		"CACHE_TIME"  =>  Array("DEFAULT"=>36000000),
 		"CACHE_GROUPS" => array(
@@ -185,198 +185,198 @@ $arComponentParameters = array(
 			"DEFAULT" => "Y",
           ),
 
-        "INFINITE" => array(
+        "SLICK_infinite" => array(
             "PARENT" => "LIB",
             "NAME" => "Infinite",
             "TYPE" => "CHECKBOX",
             "DEFAULT" => "Y",
             "DESCRIPTION" => 'Infinite looping',
             ),
-        "SLIDESTOSHOW" => array(
+        "SLICK_slidesToShow" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Slides To Show',
             'DESC'    => 'slides to show at a time',
             "DEFAULT" => "1",
             "TYPE" => "NUMBER",
             ),
-        "SLIDESTOSCROLL" => array(
+        "SLICK_slidesToScroll" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Slides To Scroll',
             'DESC'    => 'slides to scroll at a time',
             "DEFAULT" => "1",
             'TYPE'    => 'NUMBER'
             ),
-        "AUTOPLAY" => array(
+        "SLICK_autoplay" => array(
             "PARENT" => "LIB",
             "NAME" => 'Auto Play',
             'DESC'  => 'Enables auto play of slides',
             'TYPE'  => 'CHECKBOX',
             ),
-        "AUTOPLAYSPEED" => array(
+        "SLICK_autoplaySpeed" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Auto Play Speed',
             'DESC'    => 'Auto play change interval',
             'DEFAULT' => '3000',
             "TYPE" => "NUMBER",
             ),
-        "DOTS" => array(
+        "SLICK_dots" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Dots',
             'DESC'    => 'Current slide indicator dots',
             "TYPE" => "CHECKBOX",
             'data-show' => 'dotsClass'
             ),
-        "DOTSCLASS" => array(
+        "SLICK_dotsClass" => array(
             "PARENT" => "LIB",
            "NAME"   => 'Dots Class',
            'DESC'    => 'Class for slide indicator dots container',
            'DEFAULT' => 'slick-dots',
            "TYPE" => "text",
            ),
-        "ARROWS" => array(
+        "SLICK_arrows" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Arrows',
             'DESC'    => 'Enable Next/Prev arrows',
-            'DEFAULT' => 'on',
+            'DEFAULT' => 'Y',
             "TYPE" => "CHECKBOX",
-            'data-show' => 'prevArrow, nextArrow'
+            // 'data-show' => 'prevArrow, nextArrow'
             ),
-        "PREVARROW" => array(
+        "SLICK_prevArrow" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Prev Arrow',
             'DESC'    => '(html | jQuery selector) | object (DOM node | jQuery object)   Allows you to select a node or customize the HTML for the "Previous" arrow. (May use %object%)',
             'DEFAULT' => '<button type="button" class="slick-prev">Previous</button>',
             "TYPE" => "text",
             ),
-        "NEXTARROW" => array(
+        "SLICK_nextArrow" => array(
             "PARENT" => "LIB",
            "NAME"   => 'Next Arrow',
            'DESC'    => '(html | jQuery selector) | object (DOM node | jQuery object) Allows you to select a node or customize the HTML for the "Next" arrow. (May use %object%)',
            'DEFAULT' => '<button type="button" class="slick-next">Next</button>',
            "TYPE" => "text",
            ),
-        "SPEED" => array(
+        "SLICK_speed" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Speed',
             'DESC'    => 'Transition speed',
             'DEFAULT' => '300',
             "TYPE" => "NUMBER",
             ),
-        "CENTERMODE" => array(
+        "SLICK_centerMode" => array(
             "PARENT" => "LIB",
             "NAME" => 'Center Mode',
             'DESC'  => 'Enables centered view with partial prev/next slides. Use with odd numbered slidesToShow counts.',
             "TYPE" => "CHECKBOX",
-            'data-show' => 'centerPadding',
+            // 'data-show' => 'centerPadding',
             ),
-        "CENTERPADDING" => array(
+        "SLICK_centerPadding" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Center Padding',
             'DESC'    => 'Side padding when in center mode. (px or %)',
             'DEFAULT' => '50px',
             "TYPE" => "text",
             ),
-        "FADE" => array(
+        "SLICK_fade" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Fade',
             'DESC'    => 'Enables fade',
             "TYPE" => "CHECKBOX",
             ),
-        "VARIABLEWIDTH" => array(
+        "SLICK_variableWidth" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Variable Width',
             'DESC'    => 'Disables automatic slide width calculation',
             "TYPE" => "CHECKBOX",
             ),
-        "ADAPTIVEHEIGHT" => array(
+        "SLICK_adaptiveHeight" => array(
             "PARENT" => "LIB",
             "NAME" => 'AdaptiveHeight',
             'DESC'  => 'Adapts slider height to the current slide',
             "TYPE" => "CHECKBOX",
             ),
-        "CSSEASE" => array(
+        "SLICK_cssEase" => array(
             "PARENT" => "LIB",
             "NAME"   => 'CSS Ease',
             'DESC'    => 'CSS3 easing',
             'DEFAULT' => 'ease',
             "TYPE" => "text",
             ),
-        "ACCESSIBILITY" => array(
+        "SLICK_accessibility" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Accessibility',
             'DESC'    => 'Enables tabbing and arrow key navigation',
-            'DEFAULT' => 'on',
+            'DEFAULT' => 'Y',
             "TYPE" => "CHECKBOX",
             ),
-        "CUSTOMPAGING" => array(
+        "SLICK_customPaging" => array(
             "PARENT" => "LIB",
             "NAME" => 'Custom Paging',
             'DESC'  => '(use %function_name%) Custom paging templates. See source for use example.',
             "TYPE" => "text",
             ),
-        "DRAGGABLE" => array(
+        "SLICK_draggable" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Draggable',
             'DESC'    => 'Enables desktop dragging',
-            'DEFAULT' => 'on',
+            'DEFAULT' => 'Y',
             "TYPE" => "CHECKBOX",
             ),
-        "EASING" => array(
+        "SLICK_easing" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Easing',
             'DESC'    => 'animate() fallback easing',
             'DEFAULT' => 'linear',
             "TYPE" => "text",
             ),
-        "EDGEFRICTION" => array(
+        "SLICK_edgeFriction" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Edge Friction',
             'DESC'    => 'Resistance when swiping edges of non-infinite carousels',
             'DEFAULT' => '0.15',
             "TYPE" => "NUMBER",
             ),
-        "MOBILEFIRST" => array(
+        "SLICK_mobileFirst" => array(
             "PARENT" => "LIB",
            "NAME"   => 'Mobile First',
            'DESC'    => 'Responsive settings use mobile first calculation',
            "TYPE" => "CHECKBOX",
            ),
-        "INITIALSLIDE" => array(
+        "SLICK_initialSlide" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Initial Slide',
             'DESC'    => 'Slide to start on',
             'DEFAULT' => '0',
             "TYPE" => "NUMBER",
             ),
-        "LAZYLOAD" => array(
+        "SLICK_lazyLoad" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Lazy Load',
             'DESC'    => 'Accepts \'ondemand\' or \'progressive\' for lazy load technique. \'ondemand\' will load the image as soon as you slide to it, \'progressive\' loads one image after the other when the page loads.',
             'DEFAULT' => 'ondemand',
             "TYPE" => "text",
             ),
-        "PAUSEONFOCUS" => array(
+        "SLICK_pauseOnFocus" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Pause On Focus',
             'DESC'    => 'Pauses autoplay when slider is focussed',
-            'DEFAULT' => 'on',
+            'DEFAULT' => 'Y',
             "TYPE" => "CHECKBOX",
             ),
-        "PAUSEONHOVER" => array(
+        "SLICK_pauseOnHover" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Pause On Hover',
             'DESC'    => 'Pauses autoplay on hover',
-            'DEFAULT' => 'on',
+            'DEFAULT' => 'Y',
             "TYPE" => "CHECKBOX",
             ),
-        "PAUSEONDOTSHOVER" => array(
+        "SLICK_pauseOnDotsHover" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Pause On Dots Hover',
             'DESC'    => 'Pauses autoplay when a dot is hovered',
-            'DEFAULT' => 'on',
+            'DEFAULT' => 'Y',
             "TYPE" => "CHECKBOX",
             ),
-        "RESPONDTO" => array(
+        "SLICK_respondTo" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Respond To',
             'DESC'    => 'Width that responsive object responds to. Can be \'window\', \'slider\' or \'min\' (the smaller of the two).
@@ -384,94 +384,94 @@ $arComponentParameters = array(
             'DEFAULT' => 'window',
             "TYPE" => "text",
             ),
-        "ROWS" => array(
+        "SLICK_rows" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Rows',
             'DESC'    => 'Setting this to more than 1 initializes grid mode. Use slidesPerRow to set how many slides should be in each row.',
             "DEFAULT" => "Y",
             "TYPE" => "NUMBER",
             ),
-        "SLIDE" => array(
+        "SLICK_slide" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Slide',
             'DESC'    => 'Slide element query',
             'DEFAULT' => '',
             "TYPE" => "text",
             ),
-        "SLIDESPERROW" => array(
+        "SLICK_slidesPerRow" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Slides Per Row',
             'DESC'    => 'With grid mode initialized via the rows option, this sets how many slides are in each grid row.',
             "DEFAULT" => "Y",
             "TYPE" => "NUMBER",
             ),
-        "SWIPE" => array(
+        "SLICK_swipe" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Swipe',
             'DESC'    => 'Enables touch swipe',
-            'DEFAULT' => 'on',
+            'DEFAULT' => 'Y',
             "TYPE" => "CHECKBOX",
             ),
-        "SWIPETOSLIDE" => array(
+        "SLICK_swipeToSlide" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Swipe To Slide',
             'DESC'    => 'Swipe to slide irrespective of slidesToScroll',
             "TYPE" => "CHECKBOX",
             ),
-        "TOUCHMOVE" => array(
+        "SLICK_touchMove" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Touch Move',
             'DESC'    => 'Enables slide moving with touch',
-            'DEFAULT' => 'on',
+            'DEFAULT' => 'Y',
             "TYPE" => "CHECKBOX",
             ),
-        "TOUCHTHRESHOLD" => array(
+        "SLICK_touchThreshold" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Touch Threshold',
             'DESC'    => 'To advance slides, the user must swipe a length of (1/touchThreshold) * the width of the slider.',
             'DEFAULT' => '5',
             "TYPE" => "NUMBER",
             ),
-        "USECSS" => array(
+        "SLICK_useCSS" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Use CSS',
             'DESC'    => 'Enable/Disable CSS Transitions',
-            'DEFAULT' => 'on',
+            'DEFAULT' => 'Y',
             "TYPE" => "CHECKBOX",
             ),
-        "USETRANSFORM" => array(
+        "SLICK_useTransform" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Use Transform',
             'DESC'    => 'Enable/Disable CSS Transforms',
-            'DEFAULT' => 'on',
+            'DEFAULT' => 'Y',
             "TYPE" => "CHECKBOX",
             ),
-        "VERTICAL" => array(
+        "SLICK_vertical" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Vertical',
             'DESC'    => 'Vertical slide direction',
             "TYPE" => "CHECKBOX",
             ),
-        "VERTICALSWIPING" => array(
+        "SLICK_verticalSwiping" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Vertical Swiping',
             'DESC'    => 'Changes swipe direction to vertical',
             "TYPE" => "CHECKBOX",
             ),
-        "RTL" => array(
+        "SLICK_rtl" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Right To Left',
             'DESC'    => 'Change the slider\'s direction to become right-to-left',
             "TYPE" => "CHECKBOX",
             ),
-        "WAITFORANIMATE" => array(
+        "SLICK_waitForAnimate" => array(
             "PARENT" => "LIB",
             "NAME"   => 'Wait For Animate',
             'DESC'    => 'Ignores requests to advance the slide while animating',
-            'DEFAULT' => 'on',
+            'DEFAULT' => 'Y',
             "TYPE" => "CHECKBOX",
             ),
-        "ZINDEX" => array(
+        "SLICK_zIndex" => array(
             "PARENT" => "LIB",
             "NAME"   => 'zIndex',
             'DESC'    => 'Set the zIndex values for slides, useful for IE9 and lower',

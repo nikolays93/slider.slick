@@ -14,60 +14,6 @@ use Bitrix\Main\Loader,
 	Bitrix\Main,
 	Bitrix\Iblock;
 
-if( ! function_exists('bx_parse_array') ) {
-    function bx_parse_array( $args, $defaults = array(), $empty = false ) {
-        $defaults = (array) $defaults;
-        $out = array();
-
-        if( $empty ) {
-            $defaults = array_fill_keys($defaults, '');
-        }
-
-        foreach ($defaults as $name => $default) {
-            if ( array_key_exists($name, $args) ){
-                $out[ $name ] = $args[ $name ];
-            }
-            else {
-                $out[ $name ] = $default;
-            }
-        }
-
-        return $out;
-    }
-}
-
-if( ! function_exists('bx_get_image') ) {
-    function bx_get_image( $arrItem, $atts = array(), $return = false ) {
-        $atts = (array) $atts;
-
-        $attr = bx_parse_array( $arrItem, array('SRC', 'WIDTH', 'HEIGHT', 'ALT', 'TITLE'), true );
-
-        $html = '';
-        if( $attr['SRC'] ) {
-            $hwstring = '';
-            if( $attr['HEIGHT'] ) $hwstring .= "height='{$attr['HEIGHT']}' ";
-            if( $attr['WIDTH'] ) $hwstring .= "width='{$attr['WIDTH']}' ";
-
-            unset($attr['HEIGHT']);
-            unset($attr['WIDTH']);
-
-            $attr = array_merge($atts, $attr);
-
-            $html .= rtrim("<img $hwstring");
-            foreach ( $attr as $name => $value ) {
-                $html .= sprintf(' %s="%s"', strtolower($name), htmlspecialcharsbx($value) );
-            }
-            $html .= ' />';
-        }
-
-        if( $return ) {
-            return $html;
-        }
-
-        echo $html;
-    }
-}
-
 if( ! isset( $arParams["CACHE_TIME"] ) ) {
 	$arParams["CACHE_TIME"] = 36000000;
 }
@@ -159,15 +105,16 @@ if( $this->startResultCache(false, $groups) ) {
 
 	//SELECT
 	$arSelect = array_merge( $arParams["FIELD_CODE"], array(
-		"ID",
-		"IBLOCK_ID",
-		"ACTIVE_FROM",
-		"NAME",
-		"DETAIL_TEXT_TYPE",
-		"DETAIL_PAGE_URL",
-		"PREVIEW_TEXT_TYPE",
-		"PREVIEW_PICTURE",
-		"DETAIL_PICTURE",
+        "ID",
+        "IBLOCK_ID",
+        "IBLOCK_SECTION_ID",
+        "NAME",
+        "ACTIVE_FROM",
+        "TIMESTAMP_X",
+        "DETAIL_PAGE_URL",
+        "PREVIEW_TEXT",
+        "PREVIEW_PICTURE",
+        "PREVIEW_LINK",
 	) );
 
 	$bGetProperty = count($arParams["PROPERTY_CODE"]) > 0;
@@ -256,7 +203,7 @@ if( $this->startResultCache(false, $groups) ) {
 
 			Iblock\Component\Tools::getFieldImageData(
 				$arItem,
-				array('PREVIEW_PICTURE', 'DETAIL_PICTURE'),
+				array('PREVIEW_PICTURE'),
 				Iblock\Component\Tools::IPROPERTY_ENTITY_ELEMENT,
 				'IPROPERTY_VALUES'
 			);
@@ -287,6 +234,25 @@ if( $this->startResultCache(false, $groups) ) {
 		}
 		$arResult["IBLOCKS"][] = $arIBlock;
 	}
+
+    $arParams['SlickProps'] = array();
+    foreach ($arParams as $param => $value) {
+        if( 0 === strpos($param, 'SLICK_') ) {
+            if( is_numeric($value) ) {
+                $value = (float) $value;
+            }
+            else {
+                switch ($value) {
+                    case 'Y': $value = true; break;
+                    case 'N': $value = false; break;
+                    default: $value = htmlspecialchars_decode($value); break;
+                }
+            }
+
+            $arParams['SlickProps'][ str_replace('SLICK_', '', $param) ] = $value;
+            unset($arParams[$param]);
+        }
+    }
 
 	$this->setResultCacheKeys(array());
 	$this->includeComponentTemplate();

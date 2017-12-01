@@ -10,68 +10,67 @@
 /** @var string $templateFolder */
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
+/** @var $arrSlickProps array params for lib */
 $this->setFrameMode(true);
 
-if( !isset($arResult["IBLOCKS"]) || ! is_array($arResult["IBLOCKS"]) )
-	return;
-
 $this->addExternalCss($componentPath . "/assets/slick/slick.css");
-$this->addExternalJS($componentPath . "/assets/slick/slick.min.js");
-
+$this->addExternalJS ($componentPath . "/assets/slick/slick.min.js");
+// $this->addExternalJS ($componentPath . "/assets/slick/initialize.js");
+$first_iblock = current($arResult['IBLOCKS']);
 ?>
-<style type="text/css">
-/* Default Icons */
-.slick-loading .slick-list
-{
-	background: #fff url('<?=$componentPath;?>/assets/slick/ajax-loader.gif') center center no-repeat;
-}
-@font-face
-{
-	font-family: 'slick';
-	font-weight: normal;
-	font-style: normal;
+<div class="slick-list" id="slick-<?=$first_iblock['ID'];?>">
+<?foreach ($arResult['IBLOCKS'] as $iblock):
+foreach($iblock["ITEMS"] as $arItem):
+	for ($i=0; $i < 10; $i++) {
 
-	src: url('<?=$componentPath;?>/assets/slick/fonts/slick.eot');
-	src: url('<?=$componentPath;?>/assets/slick/fonts/slick.eot?#iefix') format('embedded-opentype'),
-	url('<?=$componentPath;?>/assets/slick/fonts/slick.woff') format('woff'),
-	url('<?=$componentPath;?>/assets/slick/fonts/slick.ttf') format('truetype'),
-	url('<?=$componentPath;?>/assets/slick/fonts/slick.svg#slick') format('svg');
-}
+	$this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
+	$this->AddDeleteAction($arItem['ID'], $arItem['DELETE_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => GetMessage('CT_BNL_ELEMENT_DELETE_CONFIRM')));
 
-</style>
-<?php
-foreach ($arResult["IBLOCKS"] as $arIBlock) {
-	echo "<section id='slick-slider-{$arIBlock['ID']}'>";
-	// Добавить кнопку "Добавить элемент"
-	$this->AddEditAction('iblock_'.$arIBlock['ID'], $arIBlock['ADD_ELEMENT_LINK'], CIBlock::GetArrayByID($arIBlock["ID"], "ELEMENT_ADD"));
+	$name = $arItem["NAME"];
+	$img = sprintf('<img src="%s" width="%s" height="%s" alt="%s" title="%s" />',
+		$arItem["PREVIEW_PICTURE"]["SRC"],
+		$arItem["PREVIEW_PICTURE"]["WIDTH"],
+		$arItem["PREVIEW_PICTURE"]["HEIGHT"],
+		$arItem["PREVIEW_PICTURE"]["ALT"],
+		$arItem["PREVIEW_PICTURE"]["TITLE"]);
 
-	$i = 0;
-	foreach($arIBlock["ITEMS"] as $arItem) { ?>
-		<div id="<?=$this->GetEditAreaId($arItem['ID']);?>"<?if($i) echo ' style="display: none;"';?>>
-			<?php
-			// Добавить кнопки "Изменить", "Удалить"
-			// $this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
-			// $this->AddDeleteAction($arItem['ID'], $arItem['DELETE_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => 'Вы уверены?'));
-
-				bx_get_image( $arItem['PREVIEW_PICTURE'] );
-				bx_get_image( $arItem['DETAIL_PICTURE'] );
-			?>
-			<!-- <a href="<? // =$arItem["DETAIL_PAGE_URL"]?>"><? // =$arItem["NAME"]?></a> -->
-		</div>
-		<?php
-		$i++;
+	if( ! empty($arItem['PREVIEW_LINK']) ) {
+		$link = $arItem['PREVIEW_LINK'];
 	}
-	echo "</section>";
-}
+	elseif( $arResult["USER_HAVE_ACCESS"] ) {
+		$link = $arItem["DETAIL_PAGE_URL"];
+		echo sprintf('<a href="%s">%s</a>', $link, $img);
+	}
+	?>
+	<div class="item" id="<?=$this->GetEditAreaId($arItem['ID']);?>">
 
-if( ! (string)$props = json_encode((array)$props) ) {
-	$props = '';
-}
+		<div class="thumbnail">
+			<?if($arParams["DISPLAY_PICTURE"]!="N" && is_array($arItem["PREVIEW_PICTURE"])) {
+				echo ( $link ) ? sprintf('<a href="%s">%s</a>', $link, $img) : $img;
+			}?>
+		</div>
 
+		<div class="description">
+			<?if($arParams["DISPLAY_NAME"]!="N" && $arItem["NAME"]) {
+				echo sprintf('<div class="item-title">%s</div>',
+					$link ? sprintf('<a href="%s">%s</a>', $link, $name) : $name);
+			}?>
 
-?>
-<? // =$props;?>
+			<?if($arParams["DISPLAY_DATE"]!="N" && $arItem["DISPLAY_ACTIVE_FROM"]):?>
+				<small class="date-time"><?echo $arItem["DISPLAY_ACTIVE_FROM"]?></small>
+			<?endif?>
+
+			<?if($arParams["DISPLAY_PREVIEW_TEXT"]!="N" && $arItem["PREVIEW_TEXT"]):?>
+				<div class="text"><?echo $arItem["PREVIEW_TEXT"];?></div>
+			<?endif;?>
+		</div>
+
+	</div>
+<? } endforeach;endforeach;?>
+</div><!-- .slick-list -->
+
 <script type="text/javascript">
-	BX.message({ BLOCK_ID: '#slick-slider-<?=$arIBlock['ID'];?>' });
+	jQuery(document).ready(function($) {
+		$( '#slick-<?=$first_iblock['ID'];?>' ).slick( <?=json_encode( $arParams['SlickProps'] );?> );
+	});
 </script>
-<?
