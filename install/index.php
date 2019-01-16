@@ -5,11 +5,11 @@ use \Bitrix\Main\Application;
 
 Loc::loadMessages(__FILE__);
 
-Class NikolayS93SliderSlickModule extends CModule {
+Class nikolays93_slider_slick extends CModule {
 	const IBLOCKTYPE = 'media_content';
     const IBLOCKCODE = "slick";
 
-	public $MODULE_ID = 'nikolays93:slider.slick';
+	public $MODULE_ID = 'nikolays93.slider.slick';
 	public $MODULE_VERSION;
 	public $MODULE_VERSION_DATE;
 	public $MODULE_NAME;

@@ -11,14 +11,19 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 /** @var $arrSlickProps array params for lib */
+
+if( 0 >= intval($arResult['COUNT']) ) return;
+
 $this->setFrameMode(true);
 
 $this->addExternalCss($componentPath . "/assets/slick/slick.css");
 $this->addExternalJS ($componentPath . "/assets/slick/slick.min.js");
 // $this->addExternalJS ($componentPath . "/assets/slick/initialize.js");
-$first_iblock = current($arResult['IBLOCKS']);
+$slickID = randString(6);
+
+
 ?>
-<div class="slick-list" id="slick-<?=$first_iblock['ID'];?>">
+<div class="slick-list" id="slick-<?= $slickID ?>">
 <?foreach ($arResult['IBLOCKS'] as $iblock):
 foreach($iblock["ITEMS"] as $arItem):
 	$this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
@@ -61,6 +66,6 @@ foreach($iblock["ITEMS"] as $arItem):
 
 <script type="text/javascript">
 	jQuery(document).ready(function($) {
-		$( '#slick-<?=$first_iblock['ID'];?>' ).slick( <?=json_encode( $arParams['SlickProps'] );?> );
+		$( '#slick-<?= $slickID ?>' ).slick(<?=json_encode( $arResult['SlickProps'] );?>);
 	});
 </script>
